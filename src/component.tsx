@@ -1,5 +1,6 @@
 import * as React from 'react'
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useReducer, useState} from "react";
+import { reducer, initialState } from './reducer'
 
 // useCallback
 type Props ={
@@ -66,32 +67,40 @@ const Effect: React.FC = () => {
     )
 }
 
-const Container: React.FC = () => {
-    // const [state, update] = useState({
-    //     clickedX: 0,
-    //     clickedY: 0
-    // })
-    // const handleClick = useCallback(
-    //     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    //         event.persist()
-    //         const { top, left } = event.currentTarget.getBoundingClientRect()
-    //         update(prev => ({
-    //             ...prev,
-    //             clickedX: event.clientX - left,
-    //             clickedY: event.clientY - top
-    //         }))
-    //     },
-    //     []
-    // )
-    // return(
-    //     <Component
-    //         clickedX={state.clickedX}
-    //         clickedY={state.clickedY}
-    //         handleClick={handleClick}
-    //     />
-    // )
+const Redu: React.FC = () => {
+    const [state, dispatch] = useReducer(reducer, initialState)
     return(
-        <Effect/>
+        <>
+            Count: {state.count}
+            <button onClick={() => dispatch({type: 'increment'})}>+</button>
+            <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+        </>
+    )
+}
+
+const Container: React.FC = () => {
+    const [state, update] = useState({
+        clickedX: 0,
+        clickedY: 0
+    })
+    const handleClick = useCallback(
+        (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+            event.persist()
+            const { top, left } = event.currentTarget.getBoundingClientRect()
+            update(prev => ({
+                ...prev,
+                clickedX: event.clientX - left,
+                clickedY: event.clientY - top
+            }))
+        },
+        []
+    )
+    return(
+        <Component
+            clickedX={state.clickedX}
+            clickedY={state.clickedY}
+            handleClick={handleClick}
+        />
     )
 }
 
