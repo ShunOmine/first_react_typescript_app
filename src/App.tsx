@@ -2,6 +2,7 @@ import React from 'react';
 import { rows } from "./data";
 import Thead from './thead'
 import Tbody from './tbody'
+import Parent from './sample'
 
 const App: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const App: React.FC = () => {
             <Thead/>
             <Tbody rows={rows}/>
         </table>
+        <Parent childLabel="children"/>
     </div>
   );
 }
